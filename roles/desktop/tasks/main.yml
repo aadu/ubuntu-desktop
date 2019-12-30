@@ -1,13 +1,13 @@
 ---
 
-- name: Adding UNetbootin PPA
-  apt_repository:
-    repo: ppa:gezakovacs/ppa
+# - name: Adding UNetbootin PPA
+#   apt_repository:
+#     repo: ppa:gezakovacs/ppa
 
 
-- name: Adding Kid3 PPA
-  apt_repository:
-    repo: ppa:ufleisch/kid3
+# - name: Adding Kid3 PPA
+#   apt_repository:
+#     repo: ppa:ufleisch/kid3
 
 
 - name: Install common desktop packages
@@ -17,7 +17,7 @@
     cache_valid_time: "{{ aptcachetime }}"
     name:
     - bleachbit
-    - kid3 # audio files metadata management
+    # - kid3 # audio files metadata management
     - byzanz # screen recording
     - geany
     - libnotify-bin
@@ -28,14 +28,17 @@
     - rxvt-unicode-256color
     - sox # to play sounds
     - ubuntu-restricted-extras # MP3, Microsoft fonts, Flash plugin, LAME and DVD playback
-    - unetbootin # create bootable USB drives
+    # - unetbootin # create bootable USB drives
     - wmctrl # to control windows
     - xclip # to manipulate the clipboard
     - xdotool # to control windows
 
 
-- name: Install common desktop packages (snap)
+- name: Install vlc
   snap:
-    name:
-      - vlc
-      - yakuake
+    name: vlc
+
+
+# - name: Install yakuake
+#   snap:
+#     name: yakuake

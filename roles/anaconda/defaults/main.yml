@@ -1,0 +1,21 @@
+---
+# Choose your version of Anaconda by choosing a propper installer. 
+# - for Miniconda: https://repo.continuum.io/miniconda/
+# - for Anaconda: https://repo.continuum.io/archive/
+anaconda_installer_uri: "https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh"
+anaconda_installer_md5: "c1c15d3baba15bf50293ae963abef853"
+
+# install per default
+anaconda_state: present
+
+# home folder of the installation
+anaconda_home_dir: "/opt/anaconda"
+
+# run installer even if Anaconda is already installed
+anaconda_force_install: False
+
+# set anaconda binary path at the beginning of $PATH
+anaconda_set_path: True
+
+# destination folder for downloaded installer-files
+anaconda_installer_dir: "{{ anaconda_home_dir }}"

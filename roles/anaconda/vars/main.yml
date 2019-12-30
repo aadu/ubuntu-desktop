@@ -1,0 +1,11 @@
+---
+
+# directory for installing the anaconda distribution
+# Hint: it's not anaconda_home_dir because the installer-file
+# is located there by default and (1) anaconda has to be installed
+# in a non-existing dir and (2) for a version change we have to remove
+# the installation dir without removing the installer-file.
+anaconda_install_dir: "{{ anaconda_home_dir }}/dist"
+
+# just for convenience
+anaconda_installer_file: "{{ anaconda_installer_dir }}/{{ anaconda_installer_uri|basename }}"
