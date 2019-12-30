@@ -4,8 +4,16 @@
     name: code
     classic: yes
 
+- name: Create VSCode Alias
+  copy:
+    src: code
+    dest: /usr/bin/code
+    mode: '0777'
+    owner: root
+    group: root
+
 - name: Set VSCode as default editor
-  command: update-alternatives --set editor /snap/bin/code
+  command: update-alternatives --install /usr/bin/editor editor /usr/bin/code 100
   when: vscode.set_default == true
 
 - name: Set VSCode to open plain text files
