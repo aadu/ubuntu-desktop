@@ -4,8 +4,8 @@
   hosts: localhost
   roles:
     # Common roles
-    # - { role: locales, become: true }
-    # - { role: common, become: true }
+    - { role: locales, become: true }
+    - { role: common, become: true }
     # - { role: java-openjdk, become: true }
     # Server roles
     # - { role: awscli, become: false }
