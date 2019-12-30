@@ -1,4 +1,8 @@
 ---
 
 - name: Install Vokoscreen screenshot tool
-  apt: name=vokoscreen state=present
+  apt:
+    name: vokoscreen
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"

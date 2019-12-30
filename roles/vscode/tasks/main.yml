@@ -1,0 +1,13 @@
+
+- name: Install VSCode
+  snap:
+    name: code
+    classic: yes
+
+- name: Set VSCode as default editor
+  command: update-alternatives --set editor /snap/bin/code
+  when: vscode.set_default == true
+
+- name: Set VSCode to open plain text files
+  command: xdg-mime default code.desktop text/plain
+  when: vscode.set_default == true
