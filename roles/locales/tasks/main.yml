@@ -17,4 +17,8 @@
     - Update TimeZone data
 
 - name: Install ntp package
-  action: apt pkg=ntp state=latest update_cache=yes cache_valid_time={{ aptcachetime }}
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+    name: ntp
