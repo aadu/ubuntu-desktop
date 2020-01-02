@@ -2,8 +2,9 @@
 # Choose your version of Anaconda by choosing a propper installer. 
 # - for Miniconda: https://repo.continuum.io/miniconda/
 # - for Anaconda: https://repo.continuum.io/archive/
-anaconda_installer_uri: "https://repo.continuum.io/miniconda/Miniconda3-4.3.21-Linux-x86_64.sh"
-anaconda_installer_md5: "c1c15d3baba15bf50293ae963abef853"
+# https://docs.anaconda.com/anaconda/install/hashes/Anaconda3-2019.10-Linux-x86_64.sh-hash/
+anaconda_installer_uri: "https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_64.sh"
+anaconda_installer_md5: "b77a71c3712b45c8f33c7b2ecade366c"
 
 # install per default
 anaconda_state: present

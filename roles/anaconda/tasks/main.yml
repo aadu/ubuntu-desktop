@@ -1,41 +1,42 @@
 ---
 
-- name: pre tasks
+- name: pre anaconda installation tasks
 # ===============
   when: "anaconda_state == 'present'"
 
   block:
-  - name: pre - ensure folders exist
+
+  - name: pre - ensure anaconda folders exist
     file:
       dest: "{{ item }}"
       state: directory
     with_items:
       - "{{ anaconda_installer_dir }}"
       - "{{ anaconda_home_dir }}"
-  - name: pre - ensure installer file exists
+  - name: pre - ensure anaconda installer file exists
     get_url:
       url: "{{ anaconda_installer_uri }}"
       dest: "{{ anaconda_installer_file }}"
       force: False
       checksum: "md5:{{ anaconda_installer_md5 }}"
-  - name: pre - link installer file to anaconda home
+  - name: pre - link anaconda installer file to anaconda home
     file:
       src: "{{ anaconda_installer_file }}"
       dest: "{{ anaconda_home_dir }}/installer.sh"
       state: link
     register: installer
-  - name: pre - write a note for installer
+  - name: pre - write a note for anaconda installer
     copy:
       dest: "{{ anaconda_home_dir }}/installer.README.txt"
       content: |
         Do not touch the linked file because ansible 
         uses it to decide if a reinstallation 
         (uninstall/install) is necessary.
-  - name: pre - remove installation for a new install
+  - name: pre - remove anaconda installation for a new install
     # if the installer file changes, we assume a new version should be installed
     # (the Anaconda way recommend a 'conda update' or similar instead of a new
     # installation but we won't to that here to keep it simple stupid)
-    when: installer|changed
+    when: installer is changed
     file:
       dest: "{{ anaconda_install_dir }}"
       state: absent
@@ -45,9 +46,9 @@
         msg: "failed to prepare installation. installer file may be changed. a pre-installed anaconda may be removed."
 
 
-- name: install
+- name: install anaconda
 # =============
-  when: "anaconda_state == 'present' and (installer|changed or anaconda_force_install)"
+  when: "anaconda_state == 'present' and (installer is changed or anaconda_force_install)"
 
   block:
   - name: install - run installer
@@ -69,6 +70,27 @@
   when: "anaconda_state == 'present' and anaconda_set_path|bool"
 
   block:
+  - name: Ensure group "anaconda" exists
+    group:
+      name: anaconda
+      state: present
+
+  - name: Recursively change ownership of anaconda
+    file:
+      path: "{{ anaconda_home_dir }}"
+      state: directory
+      recurse: yes
+      group: anaconda
+      mode: '0770'
+
+  - name: "adding existing user {{ ansible_user }} to group anaconda"
+    user:
+      name: "{{ ansible_user }}"
+      shell: /bin/bash
+      groups:
+        - anaconda
+      append: yes
+
   - name: post - set path to anaconda
     lineinfile:
       dest: "{{ item }}"
@@ -77,16 +99,20 @@
       insertafter: EOF
       line: 'export PATH="{{ anaconda_install_dir }}/bin:$PATH"'
     with_items:
-      - /etc/bash.bashrc.local
-      - /etc/ksh.kshrc.local
-      - /etc/zsh.zshrc.local
-      - /etc/ash.ashrc.local
+      - /etc/bash.bashrc
+
   - name: post - install pip packages
     pip:
-      name: "{{ anaconda_pip_packages }}"
+      name:
+        - click
+        - isort
+        - pylint
+        - pylint-django
+        - pyinvoke
+        - speedtest-cli
+        - yapf
       state: latest
       executable: /opt/anaconda/dist/bin/pip
-
 
 - name: uninstall
 # ===============
@@ -104,7 +130,4 @@
       state: absent
       line: 'export PATH="{{ anaconda_install_dir }}/bin:$PATH"'
     with_items:
-      - /etc/bash.bashrc.local
-      - /etc/ksh.kshrc.local
-      - /etc/zsh.zshrc.local
-      - /etc/ash.ashrc.local
+      - /etc/bash.bashrc
