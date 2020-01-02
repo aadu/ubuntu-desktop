@@ -1,0 +1,18 @@
+---
+
+- name: Installing git-secret apt-key
+  apt_key: 
+    url: https://api.bintray.com/users/sobolevn/keys/gpg/public.key
+    state: present
+
+- name: Add git-secret deb repository
+  apt_repository:
+    repo: "deb https://dl.bintray.com/sobolevn/deb git-secret main"
+    state: present
+
+- name: Install git-secret
+  apt:
+    update_cache: yes
+    state: latest
+    name:
+      - git-secret

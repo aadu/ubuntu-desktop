@@ -6,11 +6,13 @@
     # Common roles
     # - { role: locales, become: true }
     # - { role: common, become: true }
-    # - { role: java-openjdk, become: true }
     # - { role: cmdline, become: true }
+    - { role: git-secret, become: true }
+    # - { role: docker, become: true }
+    # - { role: java-openjdk, become: true }
     # - { role: node, become: true }
-    # - { role: node, become: true }
-    - { role: anaconda, become: true }
+    
+    # - { role: anaconda, become: true }
     # Desktop roles
     # - { role: desktop, become: true }
     # - { role: dbeaver, become: true }
@@ -26,11 +28,9 @@
 
     # Server roles
     # - { role: awscli, become: false }
-    # - { role: docker, become: true }
     # - { role: ecs-cli, become: true }
     # - { role: kubectl, become: true }
     # - { role: minikube, become: true }
-    # - { role: python, become: true }
     # - { role: ssh, become: true }
     # - { role: ufw, become: true }
     # Desktop roles
@@ -40,7 +40,6 @@
     # - { role: notify-osd, become: true }
     # - { role: remmina, become: true }
     # - { role: shutter, become: true }
-    # - { role: skype, become: true }
     # - { role: sublime3, become: true }
     # - { role: sunflower, become: true }
     # - { role: timeshift, become: true }
