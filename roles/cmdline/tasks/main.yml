@@ -1,0 +1,9 @@
+- name: Install fasd
+  snap:
+    name: fasd
+    channel: beta
+
+- name: Add fasd init to bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: eval "$(fasd --init auto)"

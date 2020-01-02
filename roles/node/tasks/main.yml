@@ -1,0 +1,68 @@
+- name: Check if nodejs is installed
+  shell: dpkg-query -W nodejs | grep 13
+  register: nodejs
+  failed_when: nodejs.rc > 1
+  changed_when: nodejs.rc == 1
+
+
+- name: Download nodejs setup script
+  get_url: url="https://deb.nodesource.com/setup_13.x" dest="/tmp/nodejs-setup.sh"
+  when: nodejs.rc == 1
+
+- name: Run node js setup script
+  shell:
+    cmd: bash /tmp/nodejs-setup.sh
+  when: nodejs.rc == 1
+
+- name: Clean nodejs setup script
+  file:
+    path: /tmp/nodejs-setup.sh
+    state: absent
+
+- name: Install nodejs
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+    install_recommends: no
+    name:
+      - nodejs
+
+
+
+- name: Installing yarn apt-key
+  apt_key: 
+    url: https://dl.yarnpkg.com/debian/pubkey.gpg
+    state: present
+
+- name: Add yarn repository
+  apt_repository:
+    repo: 'deb https://dl.yarnpkg.com/debian/ stable main'
+    state: present
+
+- name: Install yarn
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+    install_recommends: no
+    name:
+      - yarn
+
+
+- name: Install global yarn packages
+  yarn:
+    name: "{{ item }}"
+    state: latest
+    global: yes
+  with_items:
+    - tldr
+    - eslint
+    - typescript
+    - prettier
+    - fkill-cli
+    - internal-ip-cli
+    - public-ip-cli
+    - get-port-cli
+    - open-cli
+
