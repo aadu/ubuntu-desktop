@@ -7,8 +7,10 @@
     # - { role: locales, become: true }
     # - { role: common, become: true }
     # - { role: java-openjdk, become: true }
-    - { role: cmdline, become: true }
-    - { role: node, become: true }
+    # - { role: cmdline, become: true }
+    # - { role: node, become: true }
+    # - { role: node, become: true }
+    - { role: anaconda, become: true }
     # Desktop roles
     # - { role: desktop, become: true }
     # - { role: dbeaver, become: true }
