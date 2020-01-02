@@ -1,0 +1,45 @@
+---
+
+- name: Installing google cloud sdk apt-key
+  apt_key: 
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+    keyring: /usr/share/keyrings/cloud.google.gpg
+
+- name: Add google cloud sdk deb repository
+  apt_repository:
+    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+    state: present
+    filename: google-cloud-sdk
+
+- name: Install google cloud sdk
+  apt:
+    update_cache: yes
+    state: latest
+    name:
+      - google-cloud-sdk
+      - google-cloud-sdk-cloud-build-local
+      - kubectl
+      - bash-completion
+
+- name: Add kubectl alias k
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    line: alias k="kubectl"
+
+- name: check if kubectl_completion file exists
+  stat: 
+    path: /etc/bash_completion.d/kubectl
+  register: kubectl_completion
+
+- name: Add kubectl bash completion
+  shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+  when: kubectl_completion.stat.exists != true
+
+- name: Add kubectl completion to alias k
+  lineinfile:
+    dest: "{{ ansible_env.HOME }}/.bashrc"
+    line: complete -F __start_kubectl k
+
+
+

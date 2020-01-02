@@ -7,12 +7,14 @@
     # - { role: locales, become: true }
     # - { role: common, become: true }
     # - { role: cmdline, become: true }
-    - { role: git-secret, become: true }
-    # - { role: docker, become: true }
+    # - { role: git-secret, become: true }
     # - { role: java-openjdk, become: true }
     # - { role: node, become: true }
-    
-    # - { role: anaconda, become: true }
+        # - { role: anaconda, become: true }
+    # Server roles
+    # - { role: docker, become: true }
+    # - { role: awscli, become: true }
+    - { role: google-cloud-sdk, become: true }
     # Desktop roles
     # - { role: desktop, become: true }
     # - { role: dbeaver, become: true }
@@ -27,9 +29,7 @@
 
 
     # Server roles
-    # - { role: awscli, become: false }
     # - { role: ecs-cli, become: true }
-    # - { role: kubectl, become: true }
     # - { role: minikube, become: true }
     # - { role: ssh, become: true }
     # - { role: ufw, become: true }
