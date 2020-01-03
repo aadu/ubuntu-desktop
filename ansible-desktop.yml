@@ -24,7 +24,7 @@
     # - { role: desktop, become: true }
     # - { role: filezilla, become: true }
     # - { role: firefox, become: true }
-    # - { role: forticlient, become: true }    
+    - { role: forticlient, become: true }    
     # - { role: remarkable, become: true }
     # - { role: slack, become: true}
     # - { role: ssh, become: true }

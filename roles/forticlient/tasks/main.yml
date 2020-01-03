@@ -2,17 +2,19 @@
 
 - name: Installing forticlient apt-key
   apt_key: 
-    url: https://repo.fortinet.com/repo/ubuntu/DEB-GPG-KEY
+    id: 2FAB19E7CCB7F415
+    keyserver: keyserver.ubuntu.com
     state: present
 
 - name: Add forticlient deb repository
   apt_repository:
-    repo: "deb [arch=amd64] https://repo.fortinet.com/repo/ubuntu/ /bionic multiverse"
+    repo: "deb https://apt.iteas.at/iteas bionic main"
     state: present
+    filename: iteas
 
 - name: Install forticlient
   apt:
     update_cache: yes
     state: latest
     name:
-      - forticlient
+      - openfortigui
