@@ -1,45 +1,140 @@
 ---
 
-- name: Installing google cloud sdk apt-key
-  apt_key: 
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
-    keyring: /usr/share/keyrings/cloud.google.gpg
+# - name: Installing google cloud sdk apt-key
+#   apt_key: 
+#     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+#     state: present
+#     keyring: /usr/share/keyrings/cloud.google.gpg
 
-- name: Add google cloud sdk deb repository
-  apt_repository:
-    repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
-    state: present
-    filename: google-cloud-sdk
+# - name: Add google cloud sdk deb repository
+#   apt_repository:
+#     repo: "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"
+#     state: present
+#     filename: google-cloud-sdk
 
-- name: Install google cloud sdk
-  apt:
-    update_cache: yes
-    state: latest
-    name:
-      - google-cloud-sdk
-      - google-cloud-sdk-cloud-build-local
-      - kubectl
-      - bash-completion
-
-- name: Add kubectl alias k
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.bashrc"
-    line: alias k="kubectl"
-
-- name: check if kubectl_completion file exists
-  stat: 
-    path: /etc/bash_completion.d/kubectl
-  register: kubectl_completion
-
-- name: Add kubectl bash completion
-  shell: kubectl completion bash > /etc/bash_completion.d/kubectl
-  when: kubectl_completion.stat.exists != true
-
-- name: Add kubectl completion to alias k
-  lineinfile:
-    dest: "{{ ansible_env.HOME }}/.bashrc"
-    line: complete -F __start_kubectl k
+# - name: Install google cloud sdk
+#   apt:
+#     update_cache: yes
+#     state: latest
+#     name:
+#       - google-cloud-sdk
+#       - google-cloud-sdk-cloud-build-local
+#       - kubectl
+#       - bash-completion
+  
+- name: Check if gcloud sdk is installed
+  shell: which gcloud
+  register: gcloud
+  failed_when: gcloud.rc > 1
+  changed_when: gcloud.rc == 1
+  vars:
+    ansible_become: false
 
 
+- name: pre google cloud sdk installation tasks
+# ===============
+  when: gcloud.rc == 1
+  block:
+
+  - name: pre - ensure google installer file exists
+    get_url:
+      url: "{{ cloud_sdk_installer_uri }}"
+      dest: "{{ cloud_sdk_installer_file }}"
+      force: False
+      checksum: "sha256:{{ cloud_sdk_installer_sha256 }}"
+
+  - name: Extract sdk installer
+    unarchive:
+      src: "{{ cloud_sdk_installer_file }}"
+      dest: "/opt/"
+    register: installer
+
+  - name: Clean setup script
+    file:
+      path: "{{ cloud_sdk_installer_file }}"
+      state: absent
+  rescue:
+    - fail:
+        msg: "failed to prepare installation. installer file may be changed."
+
+
+- name: post gcloud sdk tasks
+  when: gcloud.rc == 1
+# ================
+  block:
+  - name: Ensure group "opt" exists
+    group:
+      name: opt
+      state: present
+
+  - name: Recursively change ownership of google cloud sdk
+    file:
+      path: "{{ cloud_sdk_home_dir }}"
+      state: directory
+      recurse: yes
+      group: opt
+      mode: '0770'
+
+  - name: "adding existing user {{ ansible_user }} to group opt"
+    user:
+      name: "{{ ansible_user }}"
+      shell: /bin/bash
+      groups:
+        - opt
+      append: yes
+
+  - name: post - set path to google-cloud-sdk
+    blockinfile:
+      path: /etc/bash.bashrc
+      state: present
+      insertafter: EOF
+      block: |
+        # The next line updates PATH for the Google Cloud SDK.
+        if [ -f '/opt/google-cloud-sdk/path.bash.inc' ]; then . '/opt/google-cloud-sdk/path.bash.inc'; fi
+
+  - name: post - set gcloud auto completion
+    blockinfile:
+      path: /etc/bash.bashrc
+      state: present
+      insertafter: EOF
+      block: |
+        # The next line enables shell command completion for gcloud.
+        if [ -f '/opt/google-cloud-sdk/completion.bash.inc' ]; then . '/opt/google-cloud-sdk/completion.bash.inc'; fi
+
+  - name: Add kubectl alias k
+    lineinfile:
+      dest: "{{ ansible_env.HOME }}/.bashrc"
+      line: alias k="kubectl"
+
+  - name: check if kubectl_completion file exists
+    stat: 
+      path: /etc/bash_completion.d/kubectl
+    register: kubectl_completion
+
+  - name: Add kubectl bash completion
+    shell: kubectl completion bash > /etc/bash_completion.d/kubectl
+    when: kubectl_completion.stat.exists != true
+
+  - name: Add kubectl completion to alias k
+    lineinfile:
+      dest: "{{ ansible_env.HOME }}/.bashrc"
+      line: complete -F __start_kubectl k
+
+
+- name: Give opt group access to /opt
+  file:
+    path: /opt
+    state: directory
+    group: opt
+    mode: '0775'
+
+- name: Update gcloud components
+  command: gcloud components update
+  vars:
+    ansible_become: false
+
+- name: Install other gcloud components
+  command: gcloud components install cloud_sql_proxy cloud-build-local docker-credential-gcr minikube alpha beta kubectl --quiet
+  vars:
+    ansible_become: false
 
