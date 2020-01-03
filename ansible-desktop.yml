@@ -14,7 +14,8 @@
     # Server roles
     # - { role: docker, become: true }
     # - { role: awscli, become: true }
-    - { role: google-cloud-sdk, become: true }
+    # - { role: google-cloud-sdk, become: true }
+    - { role: ktail, become: true }
     # Desktop roles
     # - { role: desktop, become: true }
     # - { role: dbeaver, become: true }

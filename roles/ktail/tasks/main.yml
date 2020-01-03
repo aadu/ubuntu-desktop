@@ -1,0 +1,14 @@
+- name: Check if ktail is installed
+  shell: which ktail
+  register: ktail
+  failed_when: ktail.rc > 1
+  changed_when: ktail.rc == 1
+
+- name: Download ktail
+  get_url:
+    url: https://github.com/atombender/ktail/releases/download/v0.7.0/ktail-linux-amd64
+    dest: /usr/local/bin/ktail
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0775'
+  when: ktail.rc == 1
