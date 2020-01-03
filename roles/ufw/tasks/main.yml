@@ -3,7 +3,7 @@
 - name: Install ufw tool
   apt:
     name: ufw
-    state: present
+    state: latest
 
 - name: Configure ufw defaults
   ufw: direction={{ item.direction }} policy={{ item.policy }}

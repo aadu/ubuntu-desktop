@@ -24,19 +24,19 @@
     # - { role: firefox, become: true }
     # - { role: remarkable, become: true }
     # - { role: slack, become: true}
+    - { role: ssh, become: true }
     # - { role: sublime3, become: true }
     # - { role: thunderbird, become: true }
     # - { role: tmux, become: true }
+    - { role: ufw, become: true }
+    # - { role: virtualbox, become: true }
     # - { role: vokoscreen, become: true }
     # - { role: vscode, become: true }
 
 
     # Server roles
-    # - { role: ssh, become: true }
-    # - { role: ufw, become: true }
+    
     # Desktop roles
     # - { role: chromium, become: true }
     # - { role: gimp, become: true }
-    # - { role: shutter, become: true }
     # - { role: vagrant, become: true }
-    - { role: virtualbox, become: true }
