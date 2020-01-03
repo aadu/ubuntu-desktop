@@ -3,6 +3,7 @@
 - name: Install Gimp
   apt:
     name: gimp
+    state: latest
 
 - name: Add Gimp configs
   lineinfile:

@@ -6,37 +6,32 @@
     # Common roles
     # - { role: locales, become: true }
     # - { role: common, become: true }
+    # - { role: anaconda, become: true }
     # - { role: cmdline, become: true }
     # - { role: git-secret, become: true }
     # - { role: java-openjdk, become: true }
     # - { role: node, become: true }
-        # - { role: anaconda, become: true }
     # Server roles
-    # - { role: docker, become: true }
     # - { role: awscli, become: true }
+    # - { role: docker, become: true }
+    # - { role: ecs-cli, become: true }
+    # - { role: gimp, become: true }
     # - { role: google-cloud-sdk, become: true }
     # - { role: ktail, become: true }
-    # - { role: ecs-cli, become: true }
     # Desktop roles
-    # - { role: desktop, become: true }
+    # - { role: chromium, become: true }
     # - { role: dbeaver, become: true }
+    # - { role: desktop, become: true }
     # - { role: filezilla, become: true }
     # - { role: firefox, become: true }
     # - { role: remarkable, become: true }
     # - { role: slack, become: true}
-    - { role: ssh, become: true }
+    # - { role: ssh, become: true }
     # - { role: sublime3, become: true }
     # - { role: thunderbird, become: true }
     # - { role: tmux, become: true }
-    - { role: ufw, become: true }
+    # - { role: ufw, become: true }
+    # - { role: vagrant, become: true }
     # - { role: virtualbox, become: true }
     # - { role: vokoscreen, become: true }
     # - { role: vscode, become: true }
-
-
-    # Server roles
-    
-    # Desktop roles
-    # - { role: chromium, become: true }
-    # - { role: gimp, become: true }
-    # - { role: vagrant, become: true }
