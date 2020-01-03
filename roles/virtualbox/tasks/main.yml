@@ -10,7 +10,7 @@
     repo: "deb [arch=amd64] http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
     state: present
 
-- name: Install VirtualBox {{ virtualbox.version }}
+- name: "Install VirtualBox {{ virtualbox.version }}"
   apt:
-    name: virtualbox-{{ virtualbox.version }}
-    state: present
+    name: "virtualbox-{{ virtualbox.version }}"
+    state: latest
