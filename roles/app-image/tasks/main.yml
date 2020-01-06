@@ -18,3 +18,9 @@
   vars:
     ansible_become: false
   
+- name: Download app image update
+  get_url:
+    url: https://github.com/AppImage/AppImageUpdate/releases/download/continuous/appimageupdatetool-x86_64.AppImage
+    dest: /usr/local/bin/AppImageUpdate
+    mode: '0755'
+  when: appimaged.rc == 1
