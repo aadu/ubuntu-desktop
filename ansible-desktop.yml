@@ -20,7 +20,8 @@
     # - { role: ktail, become: true }
     # Desktop roles
     # - { role: chromium, become: true }
-    - { role: cura, become: true } 
+    - { role: app-image, become: true } 
+    # - { role: cura, become: true } 
     # - { role: dbeaver, become: true }
     # - { role: desktop, become: true }
     # - { role: filezilla, become: true }

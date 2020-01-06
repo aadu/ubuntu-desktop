@@ -1,0 +1,20 @@
+- name: Check if appimaged is installed
+  shell: dpkg-query -W appimaged
+  register: appimaged
+  failed_when: appimaged.rc > 1
+  changed_when: appimaged.rc == 1
+
+- name: Install appimaged
+  apt:
+    deb: https://github.com/AppImage/appimaged/releases/download/continuous/appimaged_1-alpha-git0f1c320.travis214_amd64.deb
+  when: appimaged.rc == 1
+
+- name: Set up appimaged service
+  systemd:
+    state: started
+    name: appimaged
+    daemon_reload: yes
+    scope: user
+  vars:
+    ansible_become: false
+  

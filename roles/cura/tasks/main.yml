@@ -9,6 +9,12 @@
 - name: Install Cura
   apt:
     update_cache: yes
-    state: latest
+    state: present
     name:
       - cura
+      - cura-engine
+      - fdm-materials
+      - libarcus
+      - libsavitar
+      - stb
+      - uranium
