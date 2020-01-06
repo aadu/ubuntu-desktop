@@ -1,0 +1,14 @@
+---
+
+- name: Add Cura ppa
+  apt_repository:
+    repo: 'ppa:thopiekar/cura-master'
+    state: present
+    filename: cura
+
+- name: Install Cura
+  apt:
+    update_cache: yes
+    state: latest
+    name:
+      - cura
