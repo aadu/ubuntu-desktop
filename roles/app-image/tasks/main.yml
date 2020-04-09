@@ -6,7 +6,7 @@
 
 - name: Install appimaged
   apt:
-    deb: https://github.com/AppImage/appimaged/releases/download/continuous/appimaged_1-alpha-git0f1c320.travis214_amd64.deb
+    deb: https://github.com/AppImage/appimaged/releases/download/continuous/appimaged_1-alpha-gitb096cd3.travis221_amd64.deb
   when: appimaged.rc == 1
 
 - name: Set up appimaged service

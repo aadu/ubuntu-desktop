@@ -6,27 +6,24 @@
     # Common roles
     # - { role: locales, become: true }
     # - { role: common, become: true }
-    - { role: anaconda, become: true }
+    # - { role: anaconda, become: true }
     # - { role: java-openjdk, become: true }
     # - { role: node, become: true }
     # - { role: dev, become: true }
 
     # Server roles
-    # - { role: awscli, become: true }
+    # - { role: cloud, become: true }
     # - { role: docker, become: true }
-    # - { role: ecs-cli, become: true }
     # - { role: forticlient, become: true }    
-    # - { role: google-cloud-sdk, become: true }
-    # - { role: ktail, become: true }
+    - { role: google-cloud-sdk, become: true }
     # - { role: ssh, become: true }
     # - { role: ufw, become: true }
 
     # Desktop roles
     # - { role: gimp, become: true }
-    # - { role: chromium, become: true }
     # - { role: app-image, become: true } 
-    # - { role: cura, become: true } 
     # - { role: desktop, become: true }
+    # - { role: chromium, become: true }
     # - { role: firefox, become: true }
     # - { role: sublime3, become: true }
     # - { role: thunderbird, become: true }
