@@ -19,6 +19,7 @@
       dest: "{{ anaconda_installer_file }}"
       force: False
       checksum: "md5:{{ anaconda_installer_md5 }}"
+      timeout: 300
   - name: pre - link anaconda installer file to anaconda home
     file:
       src: "{{ anaconda_installer_file }}"

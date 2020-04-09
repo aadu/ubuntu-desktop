@@ -1,5 +1,12 @@
 ---
 
+- name: Install tmux tool
+  apt:
+    name: tmux
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+
 - name: Installing git-secret apt-key
   apt_key: 
     url: https://api.bintray.com/users/sobolevn/keys/gpg/public.key
@@ -16,3 +23,13 @@
     state: latest
     name:
       - git-secret
+
+- name: Install fasd
+  snap:
+    name: fasd
+    channel: beta
+
+- name: Add fasd init to bashrc
+  lineinfile:
+    path: "{{ ansible_env.HOME }}/.bashrc"
+    line: eval "$(fasd --init auto)"

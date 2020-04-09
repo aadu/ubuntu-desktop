@@ -9,6 +9,12 @@
   apt_repository:
     repo: 'ppa:ufleisch/kid3'
 
+- name: Install snapd package
+  apt:
+    state: latest
+    update_cache: yes
+    cache_valid_time: "{{ aptcachetime }}"
+    name: snapd
 
 - name: Install common desktop packages
   apt:
@@ -19,6 +25,7 @@
     - bleachbit
     - kid3 # audio files metadata management
     - byzanz # screen recording
+    - filezilla
     - geany
     - libnotify-bin
     - inotify-tools
@@ -32,14 +39,27 @@
     - wmctrl # to control windows
     - xclip # to manipulate the clipboard
     - xdotool # to control windows
+    - vokoscreen  # screenshot tool
 
 
 - name: Install vlc
   snap:
     name: vlc
 
-
 - name: Install yakuake
   snap:
     name: yakuake
     channel: candidate
+
+- name: Install slack
+  snap:
+    name: slack
+    classic: yes
+
+- name: Install Remarkable
+  snap:
+    name: remarkable
+
+- name: Install DBeaver
+  snap:
+    name: dbeaver-ce
